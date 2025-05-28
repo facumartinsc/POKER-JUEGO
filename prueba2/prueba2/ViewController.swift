@@ -8,6 +8,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var jugador1TextField: UITextField!
     @IBOutlet weak var jugador2Label: UILabel!
     @IBOutlet weak var jugador2TextField: UITextField!
+    @IBOutlet weak var welcomeLabel: UILabel!
     
     // Datos del juego
     let cartasPoker = [
@@ -33,10 +34,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
+    
     func IniciarJuego() {
+        print("Juego iniciado")
         let cartasMezcladas = cartasPoker.shuffled()
         let mano1 = Array(cartasMezcladas.prefix(5))
         let mano2 = Array(cartasMezcladas.dropFirst(5).prefix(5))
@@ -74,21 +76,27 @@ class ViewController: UIViewController {
         // Mostrar el resultado
         let resultado =  determinarGanador(jugada1: jugada1, cartas1: cartasProcesadas1, jugada2: jugada2, cartas2: cartasProcesadas2)
         
-        // Cambiar color de fondo según el resultado
+        var jugador1 = jugador1TextField.text ?? "Jugador 1"
+        var jugador2 = jugador2TextField.text ?? "Jugador 2"
+        var mensajeAlerta = ""
+        
         if resultado.contains("Jugador 1") {
             mano1StackViews.backgroundColor = .green
             mano2StackViews.backgroundColor = .red
+            mensajeAlerta = "Ganó \(jugador1) con \(jugada1)"
         } else if resultado.contains("Jugador 2") {
             mano1StackViews.backgroundColor = .red
             mano2StackViews.backgroundColor = .green
+            mensajeAlerta = "Ganó \(jugador2) con \(jugada2)"
         } else {
             // Empate
             mano1StackViews.backgroundColor = .gray
             mano2StackViews.backgroundColor = .gray
+            mensajeAlerta = "Empate entre \(jugador1) y \(jugador2)"
         }
         
         // create the alert
-        let alert = UIAlertController(title: "Resultado", message: resultado, preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Resultado", message: mensajeAlerta, preferredStyle: UIAlertController.Style.alert)
         
         // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -180,14 +188,19 @@ class ViewController: UIViewController {
     
     @IBAction func jugarButtonTocado(_ sender: Any) {
         if jugarButton.title(for: .normal) == "Repartir" {
+                
             
             jugador1TextField.isHidden = true
             jugador2TextField.isHidden = true
             jugador1Label.isHidden = true
             jugador2Label.isHidden = true
+            welcomeLabel.isHidden = true
             IniciarJuego()
             jugarButton.setTitle("Volver a jugar", for: .normal)
         } else {
+            
+            jugador1TextField.text = ""
+            jugador2TextField.text = ""
             
             mano1StackViews.arrangedSubviews.forEach { $0.removeFromSuperview() }
             mano2StackViews.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -196,6 +209,7 @@ class ViewController: UIViewController {
             jugador2TextField.isHidden = false
             jugador1Label.isHidden = false
             jugador2Label.isHidden = false
+            welcomeLabel.isHidden = false
             mano1StackViews.backgroundColor = UIColor.clear
             mano2StackViews.backgroundColor = UIColor.clear
             jugarButton.setTitle("Repartir", for: .normal)

@@ -1,0 +1,3 @@
+[submodule "prueba3/Cartas"]
+	path = prueba3/Cartas
+	url = https://github.com/hayeah/playing-cards-assets
