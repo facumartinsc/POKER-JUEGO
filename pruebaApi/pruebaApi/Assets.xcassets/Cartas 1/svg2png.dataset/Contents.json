@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "svg2png.js",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
